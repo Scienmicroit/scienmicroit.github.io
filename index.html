@@ -57,10 +57,10 @@
         <div class="row">
             <div class="col">
                 <div class="bff-container">
-                    <p>更多内容发布在 CSDN 上，不妨去 CSDN 上一览无余。</p>
+                    <p>本站内容现已发布于 CSDN ，不妨去 CSDN 以获得更加浏览体验。</p>
                     <div class="btn-group justify-content-center justify-content-md-start">
                         <a href="https://blog.csdn.net/m0_47253594" target="_blank" class="btn btn-border btn-with-icon btn-small ripple">
-                            <span>去 CSDN 上看看</span>
+                            <span>去 CSDN 浏览</span>
                             <svg class="btn-icon-right" viewBox="0 0 13 9" width="13" height="9"><use xlink:href="assets/img/sprite.svg#arrow-right"></use></svg>
                         </a>
                     </div>
@@ -200,7 +200,7 @@
 								<div class="news-item-info">
 									<div class="news-item-date">2020 年 5 月 23 日</div>
 									<h3 class="news-item-heading item-heading">
-										<a href="news-post.html" title="进制的转换①">进制的转换1</a>
+										<a href="news-post.html" title="进制的转换 1">进制的转换 1</a>
 									</h3>
 									
 								</div>
@@ -288,10 +288,10 @@
 				</div>
 			</section>
 
-			<section class="section section-without-padding-bottom">
+			<section class="section section-bgc">
 				<div class="container">
 					<div class="row items spincrement-container">
-						
+
 						<div class="col-xl-3 col-md-6 col-12 item">
 							<div class="counter-min">
 								<div class="counter-min-block">
@@ -476,3 +476,201 @@
 <script src="assets/js/forms.js"></script>
 	
 </body></html>
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>粒子随心动画</title>
+    <script src="http://cdn.sucai8.cn/cdn/jquery/jquery-1.10.2.js"></script>
+    <style>
+      body {
+        overflow: hidden;
+        margin: 0;
+      }
+ 
+      .twitter:hover a {
+        transform: rotate(-45deg) scale(1.05);
+      }
+      .twitter:hover i {
+        color: #21c2ff;
+      }
+      .twitter a {
+        bottom: -40px;
+        right: -75px;
+        transform: rotate(-45deg);
+      }
+      .twitter i {
+        bottom: 7px;
+        right: 7px;
+        color: #00aced;
+      }
+ 
+      .social-icon a {
+        position: absolute;
+        background: white;
+        color: white;
+        box-shadow: -1px -1px 20px 0px rgba(0, 0, 0, 0.3);
+        display: inline-block;
+        width: 150px;
+        height: 80px;
+        transform-origin: 50% 50%;
+        transition: 0.15s ease-out;
+      }
+      .social-icon i {
+        position: absolute;
+        pointer-events: none;
+        z-index: 1000;
+        transition: 0.15s ease-out;
+      }
+ 
+      .youtube:hover a {
+        transform: rotate(45deg) scale(1.05);
+      }
+      .youtube:hover i {
+        color: #ec4c44;
+      }
+      .youtube a {
+        bottom: -40px;
+        left: -75px;
+        transform: rotate(45deg);
+      }
+      .youtube i {
+        bottom: 7px;
+        left: 7px;
+        color: #e62117;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+ 
+    <script>
+      "use strict";
+ 
+      var canvas = document.querySelector("canvas");
+      var c = canvas.getContext("2d");
+ 
+      canvas.width = innerWidth;
+      canvas.height = innerHeight;
+ 
+      var mouse = {
+        x: innerWidth / 2,
+        y: innerHeight / 2 - 80,
+      };
+ 
+      var colors = ["#00bdff", "#4d39ce", "#088eff"];
+ 
+      addEventListener("mousemove", function (event) {
+        mouse.x = event.clientX;
+        mouse.y = event.clientY;
+      });
+ 
+      addEventListener("resize", function () {
+        canvas.width = innerWidth;
+        canvas.height = innerHeight;
+ 
+        init();
+      });
+ 
+      function randomIntFromRange(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+      }
+ 
+      function randomColor(colors) {
+        return colors[Math.floor(Math.random() * colors.length)];
+      }
+ 
+      function Particle(x, y, radius, color) {
+        var _this = this;
+ 
+        var distance = randomIntFromRange(50, 120);
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.color = color;
+        this.radians = Math.random() * Math.PI * 2;
+        this.velocity = 0.05;
+        this.distanceFromCenter = {
+          x: distance,
+          y: distance,
+        };
+        this.prevDistanceFromCenter = {
+          x: distance,
+          y: distance,
+        };
+        this.lastMouse = { x: x, y: y };
+ 
+        this.update = function () {
+          var lastPoint = { x: _this.x, y: _this.y };
+          _this.radians += _this.velocity;
+ 
+          _this.lastMouse.x += (mouse.x - _this.lastMouse.x) * 0.05;
+          _this.lastMouse.y += (mouse.y - _this.lastMouse.y) * 0.05;
+ 
+          _this.distanceFromCenter.x =
+            _this.prevDistanceFromCenter.x + Math.sin(_this.radians) * 100;
+          _this.distanceFromCenter.y =
+            _this.prevDistanceFromCenter.x + Math.sin(_this.radians) * 100;
+ 
+          _this.x =
+            _this.lastMouse.x +
+            Math.cos(_this.radians) * _this.distanceFromCenter.x;
+          _this.y =
+            _this.lastMouse.y +
+            Math.sin(_this.radians) * _this.distanceFromCenter.y;
+ 
+          _this.draw(lastPoint);
+        };
+ 
+        this.draw = function (lastPoint) {
+          c.beginPath();
+          c.strokeStyle = _this.color;
+          c.lineWidth = _this.radius;
+          c.moveTo(lastPoint.x, lastPoint.y);
+          c.lineTo(_this.x, _this.y);
+          c.stroke();
+          c.closePath();
+        };
+      }
+ 
+      var particles = undefined;
+      function init() {
+        particles = [];
+ 
+        for (var i = 0; i < 50; i++) {
+          var radius = Math.random() * 2 + 1;
+          particles.push(
+            new Particle(
+              canvas.width / 2,
+              canvas.height / 2,
+              radius,
+              randomColor(colors)
+            )
+          );
+        }
+      }
+ 
+      function animate() {
+        requestAnimationFrame(animate);
+        c.fillStyle = "rgba(255, 255, 255, 0.05)";
+        c.fillRect(0, 0, canvas.width, canvas.height);
+ 
+        particles.forEach(function (particle) {
+          particle.update();
+        });
+      }
+ 
+      init();
+      animate();
+    </script>
+  </body>
+</html>
+ 
